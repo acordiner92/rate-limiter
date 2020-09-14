@@ -1,0 +1,19 @@
+{
+  "name": "rate-limiter",
+  "version": "1.0.0",
+  "description": "Rate limiter for api requests",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acordiner92/rate-limiter.git"
+  },
+  "author": "Andrew Cordiner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/acordiner92/rate-limiter/issues"
+  },
+  "homepage": "https://github.com/acordiner92/rate-limiter#readme"
+}
