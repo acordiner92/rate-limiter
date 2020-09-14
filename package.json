@@ -10,6 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/acordiner92/rate-limiter.git"
   },
+  "type": "module",
   "author": "Andrew Cordiner",
   "license": "ISC",
   "bugs": {
