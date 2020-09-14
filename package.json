@@ -4,7 +4,10 @@
   "description": "Rate limiter for api requests",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "tsnd --cls src/index.ts",
+    "build": "tsc",
+    "formatting": "prettier --check ./src",
+    "lint": "eslint ./src"
   },
   "repository": {
     "type": "git",
@@ -18,6 +21,13 @@
   },
   "homepage": "https://github.com/acordiner92/rate-limiter#readme",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.1.0",
+    "@typescript-eslint/parser": "^4.1.0",
+    "eslint": "^7.9.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-functional": "^3.0.2",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.1.1",
     "ts-node-dev": "^1.0.0-pre.62",
     "typescript": "^4.0.2"
   }
