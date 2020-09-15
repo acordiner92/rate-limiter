@@ -20,11 +20,23 @@ export const removedExpiredRateRequests = (
   rate: Rate,
   config: RateLimiterConfig,
 ): Rate => {
+  // TODO: fix this to be UTC
   const nonExpiredRates = rate.rates.filter(
     x => x.requestAt < new Date(Date.now() + 1000 * config.duration),
   );
   return {
     ...rate,
     rates: nonExpiredRates,
+  };
+};
+
+export const addNewRateRequestToRate = (rate: Rate, requestAt: Date): Rate => {
+  const rateRequest = {
+    requestAt,
+  };
+
+  return {
+    ...rate,
+    rates: [...rate.rates, rateRequest],
   };
 };

@@ -1,6 +1,7 @@
 import {
   hasRateLimitExceeded,
   removedExpiredRateRequests,
+  addNewRateRequestToRate,
 } from '../src/RateLimiter';
 
 describe('RateLimiter', () => {
@@ -72,6 +73,27 @@ describe('RateLimiter', () => {
         ),
       ).toStrictEqual({
         rates: [nonExpiredRateRequest],
+      });
+    });
+  });
+
+  describe('addNewRateRequestToRate', () => {
+    test('new RateRequest is added to rate', () => {
+      const requestAt = new Date();
+      const existingRateRequest = {
+        requestAt: new Date(),
+      };
+      const rate = {
+        rates: [existingRateRequest],
+      };
+
+      expect(addNewRateRequestToRate(rate, requestAt)).toStrictEqual({
+        rates: [
+          existingRateRequest,
+          {
+            requestAt,
+          },
+        ],
       });
     });
   });
