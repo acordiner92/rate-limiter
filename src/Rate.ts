@@ -6,6 +6,10 @@ type Rate = {
   readonly rates: ReadonlyArray<RateRequest>;
 };
 
+export const init = (): Rate => ({
+  rates: [],
+});
+
 export const hasRateLimitExceeded = (
   rate: Rate,
   requestLimit: number,

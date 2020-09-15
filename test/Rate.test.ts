@@ -2,9 +2,17 @@ import {
   hasRateLimitExceeded,
   removedExpiredRateRequests,
   addNewRateRequestToRate,
+  init,
 } from '../src/Rate';
 
 describe('Rate', () => {
+  describe('init', () => {
+    test('Creates a new rate', () =>
+      expect(init()).toStrictEqual({
+        rates: [],
+      }));
+  });
+
   describe('hasRateLimitExceeded', () => {
     const rateRequest = {
       requestAt: new Date(),
