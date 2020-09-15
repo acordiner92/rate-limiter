@@ -2,9 +2,9 @@ import {
   hasRateLimitExceeded,
   removedExpiredRateRequests,
   addNewRateRequestToRate,
-} from '../src/RateLimiter';
+} from '../src/Rate';
 
-describe('RateLimiter', () => {
+describe('Rate', () => {
   describe('hasRateLimitExceeded', () => {
     const rateRequest = {
       requestAt: new Date(),
@@ -12,19 +12,11 @@ describe('RateLimiter', () => {
 
     test('should return true if requests have exceeded the rate limit', () =>
       expect(
-        hasRateLimitExceeded(
-          { rates: [rateRequest, rateRequest] },
-          { requestLimit: 1, duration: 3600 },
-        ),
+        hasRateLimitExceeded({ rates: [rateRequest, rateRequest] }, 1),
       ).toBeTruthy());
 
     test('should return false if requests has not exceeded the rate limit', () =>
-      expect(
-        hasRateLimitExceeded(
-          { rates: [rateRequest] },
-          { requestLimit: 1, duration: 3600 },
-        ),
-      ).toBeFalsy());
+      expect(hasRateLimitExceeded({ rates: [rateRequest] }, 1)).toBeFalsy());
   });
 
   describe('removedExpiredRateRequests', () => {
@@ -34,10 +26,7 @@ describe('RateLimiter', () => {
       };
 
       expect(
-        removedExpiredRateRequests(
-          { rates: [nonExpiredRateRequest] },
-          { requestLimit: 1, duration: 3600 },
-        ),
+        removedExpiredRateRequests({ rates: [nonExpiredRateRequest] }, 3600),
       ).toStrictEqual({
         rates: [nonExpiredRateRequest],
       });
@@ -49,10 +38,7 @@ describe('RateLimiter', () => {
       };
 
       expect(
-        removedExpiredRateRequests(
-          { rates: [expiredRateRequest] },
-          { requestLimit: 1, duration: 3600 },
-        ),
+        removedExpiredRateRequests({ rates: [expiredRateRequest] }, 3600),
       ).toStrictEqual({
         rates: [],
       });
@@ -69,7 +55,7 @@ describe('RateLimiter', () => {
       expect(
         removedExpiredRateRequests(
           { rates: [expiredRateRequest, nonExpiredRateRequest] },
-          { requestLimit: 1, duration: 3600 },
+          3600,
         ),
       ).toStrictEqual({
         rates: [nonExpiredRateRequest],
