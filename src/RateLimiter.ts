@@ -1,20 +1,24 @@
-// import {
-//   addNewRateRequestToRate,
-//   removedExpiredRateRequests,
-//   hasRateLimitExceeded,
-// } from './Rate';
+import {
+  addNewRateRequestToRate,
+  removedExpiredRateRequests,
+  hasRateLimitExceeded,
+} from './Rate';
+
+import { MemoryStore } from './MemoryStore';
+import { init } from './Rate';
 
 export type RateLimiterConfig = {
   readonly requestLimit: number;
   readonly duration: number;
 };
 
-// export const getHasRateLimitExceeded = (config: RateLimiterConfig) => (
-//   identifier: string,
-// ) => {
-//   // fetch identifier rate
-//   // if none exist create new Rate other using existing
-//   const updatedRate = addNewRateRequestToRate(rate, new Date());
-//   const freshRate = removedExpiredRateRequests(updatedRate, config.duration);
-//   return hasRateLimitExceeded(freshRate, config.requestLimit);
-// };
+export const getHasRateLimitExceeded = (
+  memoryStore: MemoryStore,
+  config: RateLimiterConfig,
+) => (identifier: string): boolean => {
+  const rate = memoryStore.getRate(identifier) ?? init();
+  const updatedRate = addNewRateRequestToRate(rate, new Date());
+  const freshRate = removedExpiredRateRequests(updatedRate, config.duration);
+  memoryStore.saveRate(identifier, freshRate);
+  return hasRateLimitExceeded(freshRate, config.requestLimit);
+};

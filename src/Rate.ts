@@ -2,7 +2,7 @@ type RateRequest = {
   readonly requestAt: Date;
 };
 
-type Rate = {
+export type Rate = {
   readonly rates: ReadonlyArray<RateRequest>;
 };
 
