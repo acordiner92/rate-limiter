@@ -1,3 +1,5 @@
+import { GetUtcDateNow } from './DateUtil';
+
 type RateRequest = {
   readonly requestAt: Date;
 };
@@ -15,13 +17,13 @@ export const hasRateLimitExceeded = (
   requestLimit: number,
 ): boolean => rate.rates.length > requestLimit;
 
-export const removedExpiredRateRequests = (
+export const removedExpiredRateRequests = (getUtcDateNow: GetUtcDateNow) => (
   rate: Rate,
   rateDuration: number,
 ): Rate => {
-  // TODO: fix this to be UTC
   const nonExpiredRates = rate.rates.filter(
-    x => x.requestAt < new Date(Date.now() + 1000 * rateDuration),
+    x =>
+      x.requestAt.getTime() > getUtcDateNow().getTime() - 1000 * rateDuration,
   );
   return {
     ...rate,
@@ -40,22 +42,25 @@ export const addNewRateRequestToRate = (rate: Rate, requestAt: Date): Rate => {
   };
 };
 
-const getDifferenceInSeconds = (
+const getDifferenceInSeconds = (getUtcDateNow: GetUtcDateNow) => (
   rateRequest: RateRequest,
   rateDuration: number,
 ): number =>
   Math.ceil(
-    (new Date(Date.now() + 1000 * rateDuration).getTime() -
-      rateRequest.requestAt.getTime()) /
+    (rateRequest.requestAt.getTime() -
+      (getUtcDateNow().getTime() - 1000 * rateDuration)) /
       1000,
   );
 
-export const getRetryInAmount = (rate: Rate, rateDuration: number): number => {
+export const getRetryInAmount = (getUtcDateNow: GetUtcDateNow) => (
+  rate: Rate,
+  rateDuration: number,
+): number => {
   const [oldestRateRequest] = rate.rates
     .slice()
     .sort((a, b) => a.requestAt.getTime() - b.requestAt.getTime());
 
   return oldestRateRequest
-    ? getDifferenceInSeconds(oldestRateRequest, rateDuration)
+    ? getDifferenceInSeconds(getUtcDateNow)(oldestRateRequest, rateDuration)
     : 0;
 };
