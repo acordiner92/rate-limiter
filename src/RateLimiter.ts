@@ -2,6 +2,7 @@ import {
   addNewRateRequestToRate,
   removedExpiredRateRequests,
   hasRateLimitExceeded,
+  getRetryInAmount,
 } from './Rate';
 
 import { MemoryStore } from './MemoryStore';
@@ -25,8 +26,9 @@ export const getHasRateLimitExceeded = (
   const updatedRate = addNewRateRequestToRate(rate, new Date());
   const freshRate = removedExpiredRateRequests(updatedRate, config.duration);
   memoryStore.saveRate(identifier, freshRate);
+  const hasExceeded = hasRateLimitExceeded(rate, config.requestLimit);
   return {
-    hasExceeded: hasRateLimitExceeded(rate, config.requestLimit),
-    retryIn: 0,
+    hasExceeded,
+    retryIn: hasExceeded ? getRetryInAmount(freshRate, config.duration) : 0,
   };
 };
