@@ -39,3 +39,23 @@ export const addNewRateRequestToRate = (rate: Rate, requestAt: Date): Rate => {
     rates: [...rate.rates, rateRequest],
   };
 };
+
+const getDifferenceInSeconds = (
+  rateRequest: RateRequest,
+  rateDuration: number,
+): number =>
+  Math.ceil(
+    (new Date(Date.now() + 1000 * rateDuration).getTime() -
+      rateRequest.requestAt.getTime()) /
+      1000,
+  );
+
+export const getRetryInAmount = (rate: Rate, rateDuration: number): number => {
+  const [oldestRateRequest] = rate.rates
+    .slice()
+    .sort((a, b) => a.requestAt.getTime() - b.requestAt.getTime());
+
+  return oldestRateRequest
+    ? getDifferenceInSeconds(oldestRateRequest, rateDuration)
+    : 0;
+};

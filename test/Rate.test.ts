@@ -3,6 +3,7 @@ import {
   removedExpiredRateRequests,
   addNewRateRequestToRate,
   init,
+  getRetryInAmount,
 } from '../src/Rate';
 
 describe('Rate', () => {
@@ -89,6 +90,38 @@ describe('Rate', () => {
           },
         ],
       });
+    });
+  });
+
+  describe('getRetryInAmount', () => {
+    test('if rate requests is empty then retryInAmount should be 0', () => {
+      const rate = {
+        rates: [],
+      };
+      expect(getRetryInAmount(rate, 3600)).toBe(0);
+    });
+
+    test('if rate request is not empty then retryInAmount should be 1', () => {
+      const existingRateRequest = {
+        requestAt: new Date(Date.now() + 1000 * 3599),
+      };
+      const rate = {
+        rates: [existingRateRequest],
+      };
+      expect(getRetryInAmount(rate, 3600)).toBe(1);
+    });
+
+    test('retryInAmount should be on the old rate request', () => {
+      const oldestRateRequest = {
+        requestAt: new Date(Date.now() + 1000 * 1800),
+      };
+      const newerRateRequest = {
+        requestAt: new Date(Date.now() + 1000 * 3600),
+      };
+      const rate = {
+        rates: [newerRateRequest, oldestRateRequest],
+      };
+      expect(getRetryInAmount(rate, 3600)).toBe(1800);
     });
   });
 });

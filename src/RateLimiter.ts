@@ -12,13 +12,21 @@ export type RateLimiterConfig = {
   readonly duration: number;
 };
 
+export type RateLimitResponse = {
+  readonly hasExceeded: boolean;
+  readonly retryIn: number;
+};
+
 export const getHasRateLimitExceeded = (
   memoryStore: MemoryStore,
   config: RateLimiterConfig,
-) => (identifier: string): boolean => {
+) => (identifier: string): RateLimitResponse => {
   const rate = memoryStore.getRate(identifier) ?? init();
   const updatedRate = addNewRateRequestToRate(rate, new Date());
   const freshRate = removedExpiredRateRequests(updatedRate, config.duration);
   memoryStore.saveRate(identifier, freshRate);
-  return hasRateLimitExceeded(freshRate, config.requestLimit);
+  return {
+    hasExceeded: hasRateLimitExceeded(rate, config.requestLimit),
+    retryIn: 0,
+  };
 };
