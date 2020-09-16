@@ -1,6 +1,6 @@
 import { GetUtcDateNow } from './DateUtil';
 
-type RequestEntry = {
+export type RequestEntry = {
   readonly requestedAt: Date;
 };
 
@@ -12,12 +12,7 @@ export const init = (): RateQuota => ({
   requestEntries: [],
 });
 
-export const hasRateLimitExceeded = (
-  rateQuota: RateQuota,
-  requestLimit: number,
-): boolean => rateQuota.requestEntries.length > requestLimit;
-
-export const removedExpiredRateRequests = (getUtcDateNow: GetUtcDateNow) => (
+export const removeExpiredRateRequests = (getUtcDateNow: GetUtcDateNow) => (
   rateQuota: RateQuota,
   rateDuration: number,
 ): RateQuota => {
@@ -43,27 +38,4 @@ export const addNewRateRequestToRate = (
     ...rateQuota,
     requestEntries: [...rateQuota.requestEntries, rateRequest],
   };
-};
-
-const getDifferenceInMilliseconds = (getUtcDateNow: GetUtcDateNow) => (
-  requestEntry: RequestEntry,
-  rateDuration: number,
-): number =>
-  requestEntry.requestedAt.getTime() -
-  (getUtcDateNow().getTime() - 1000 * rateDuration);
-
-export const getRetryInAmount = (getUtcDateNow: GetUtcDateNow) => (
-  rateQuota: RateQuota,
-  rateDuration: number,
-): number => {
-  const [oldestRateRequest] = rateQuota.requestEntries
-    .slice()
-    .sort((a, b) => a.requestedAt.getTime() - b.requestedAt.getTime());
-
-  return oldestRateRequest
-    ? getDifferenceInMilliseconds(getUtcDateNow)(
-        oldestRateRequest,
-        rateDuration,
-      )
-    : 0;
 };

@@ -1,14 +1,13 @@
 import {
   addNewRateRequestToRate,
-  removedExpiredRateRequests as removeExpiredRateRequests,
-  hasRateLimitExceeded,
-  getRetryInAmount,
   RateQuota,
+  removeExpiredRateRequests,
 } from './RateQuota';
 
 import { MemoryStore } from './MemoryStore';
 import { init } from './RateQuota';
 import { GetUtcDateNow, getUtcDateNow } from './DateUtil';
+import { getRetryInAmount, hasRateLimitExceeded } from './RateQuotaCalculator';
 
 export type RateLimiterConfig = {
   readonly requestLimit: number;
