@@ -6,6 +6,8 @@ import {
 import { utc } from '../src/DateUtil';
 
 describe('RateQuota', () => {
+  const oneHr = 3600;
+
   describe('init', () => {
     test('Creates a new rate quota', () =>
       expect(init()).toStrictEqual({
@@ -24,7 +26,7 @@ describe('RateQuota', () => {
       expect(
         removeExpiredRequestEntries(getUtcDateNow)(
           { requestEntries: [nonExpiredRateRequest] },
-          3600,
+          oneHr,
         ),
       ).toStrictEqual({
         requestEntries: [nonExpiredRateRequest],
@@ -39,7 +41,7 @@ describe('RateQuota', () => {
       expect(
         removeExpiredRequestEntries(getUtcDateNow)(
           { requestEntries: [expiredRequestEntry] },
-          3600,
+          oneHr,
         ),
       ).toStrictEqual({
         requestEntries: [],
@@ -57,7 +59,7 @@ describe('RateQuota', () => {
       expect(
         removeExpiredRequestEntries(getUtcDateNow)(
           { requestEntries: [expiredRequestEntry, nonExpiredRequestEntry] },
-          3600,
+          oneHr,
         ),
       ).toStrictEqual({
         requestEntries: [nonExpiredRequestEntry],

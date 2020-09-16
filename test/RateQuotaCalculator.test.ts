@@ -4,10 +4,14 @@ import {
   hasRateLimitExceeded,
 } from '../src/RateQuotaCalculator';
 
+const oneSecond = 1000;
+const oneMinute = 60000;
+const oneHour = 3600;
+
 describe('RateQuotaCalculator', () => {
   describe('hasRateLimitExceeded', () => {
     const requestEntry = {
-      requestedAt: new Date(),
+      requestedAt: utc(2020, 10, 10, 8, 10),
     };
 
     test('returns true if the number of requests entries have exceeded the rate quota limit', () =>
@@ -31,7 +35,7 @@ describe('RateQuotaCalculator', () => {
       const rateQuota = {
         requestEntries: [],
       };
-      expect(getRetryInAmount(getUtcDateNow)(rateQuota, 3600)).toBe(0);
+      expect(getRetryInAmount(getUtcDateNow)(rateQuota, oneHour)).toBe(0);
     });
 
     test('since request entry is 59min and 58s ago, retryIn should be 2s', () => {
@@ -41,7 +45,9 @@ describe('RateQuotaCalculator', () => {
       const rateQuota = {
         requestEntries: [existingRequestEntry],
       };
-      expect(getRetryInAmount(getUtcDateNow)(rateQuota, 3600)).toBe(2000);
+      expect(getRetryInAmount(getUtcDateNow)(rateQuota, oneHour)).toBe(
+        oneSecond * 2,
+      );
     });
 
     test('retryInAmount should be based the oldest request entry', () => {
@@ -54,7 +60,9 @@ describe('RateQuotaCalculator', () => {
       const rateQuota = {
         requestEntries: [newerRequestEntry, oldestRequestEntry],
       };
-      expect(getRetryInAmount(getUtcDateNow)(rateQuota, 3600)).toBe(1200000); // 20min remaining
+      expect(getRetryInAmount(getUtcDateNow)(rateQuota, oneHour)).toBe(
+        oneMinute * 20,
+      );
     });
   });
 });

@@ -1,5 +1,7 @@
 import { GetUtcDateNow } from './DateUtil';
 
+const oneSecond = 1000;
+
 export type RequestEntry = {
   readonly requestedAt: Date;
 };
@@ -18,7 +20,8 @@ export const removeExpiredRequestEntries = (getUtcDateNow: GetUtcDateNow) => (
 ): RateQuota => {
   const nonExpiredRequestEntries = rateQuota.requestEntries.filter(
     x =>
-      x.requestedAt.getTime() > getUtcDateNow().getTime() - 1000 * rateDuration,
+      x.requestedAt.getTime() >
+      getUtcDateNow().getTime() - oneSecond * rateDuration,
   );
   return {
     ...rateQuota,
@@ -29,13 +32,12 @@ export const removeExpiredRequestEntries = (getUtcDateNow: GetUtcDateNow) => (
 export const addNewRequestEntryToRateQuota = (
   rateQuota: RateQuota,
   requestedAt: Date,
-): RateQuota => {
-  const rateRequest = {
-    requestedAt,
-  };
-
-  return {
-    ...rateQuota,
-    requestEntries: [...rateQuota.requestEntries, rateRequest],
-  };
-};
+): RateQuota => ({
+  ...rateQuota,
+  requestEntries: [
+    ...rateQuota.requestEntries,
+    {
+      requestedAt,
+    },
+  ],
+});

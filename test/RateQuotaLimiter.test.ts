@@ -2,6 +2,9 @@ import { utc } from '../src/DateUtil';
 import { calculateRateLimit } from '../src/RateQuotaLimiter';
 
 describe('RateQuotaLimiter', () => {
+  const oneHr = 3600;
+  const oneMinute = 60000;
+
   describe('calculateRateLimit', () => {
     const getUtcDateNow = (): Date => utc(2020, 10, 10, 8, 10);
 
@@ -11,7 +14,7 @@ describe('RateQuotaLimiter', () => {
       };
       const config = {
         requestLimit: 1,
-        duration: 60,
+        duration: oneHr,
       };
 
       expect(calculateRateLimit(getUtcDateNow)(rateQuota, config).retryIn).toBe(
@@ -25,7 +28,7 @@ describe('RateQuotaLimiter', () => {
       };
       const config = {
         requestLimit: 1,
-        duration: 60,
+        duration: oneHr,
       };
 
       expect(
@@ -48,11 +51,11 @@ describe('RateQuotaLimiter', () => {
       };
       const config = {
         requestLimit: 1,
-        duration: 3600,
+        duration: oneHr,
       };
 
       expect(calculateRateLimit(getUtcDateNow)(rateQuota, config).retryIn).toBe(
-        3000000, // in 50min
+        oneMinute * 50, // in 50min
       );
     });
 
@@ -66,7 +69,7 @@ describe('RateQuotaLimiter', () => {
       };
       const config = {
         requestLimit: 1,
-        duration: 3600,
+        duration: oneHr,
       };
 
       expect(
