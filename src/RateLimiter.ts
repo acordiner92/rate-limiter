@@ -3,11 +3,11 @@ import {
   removedExpiredRateRequests as removeExpiredRateRequests,
   hasRateLimitExceeded,
   getRetryInAmount,
-  Rate,
-} from './Rate';
+  RateQuota,
+} from './RateQuota';
 
 import { MemoryStore } from './MemoryStore';
-import { init } from './Rate';
+import { init } from './RateQuota';
 import { GetUtcDateNow, getUtcDateNow } from './DateUtil';
 
 export type RateLimiterConfig = {
@@ -18,7 +18,7 @@ export type RateLimiterConfig = {
 export type CalculationResponse = {
   readonly hasExceeded: boolean;
   readonly retryIn: number;
-  readonly rate: Rate;
+  readonly rate: RateQuota;
 };
 
 export type RateLimitResponse = {
@@ -27,7 +27,7 @@ export type RateLimitResponse = {
 };
 
 export const calculateRateLimit = (getUtcDateNow: GetUtcDateNow) => (
-  rate: Rate,
+  rate: RateQuota,
   config: RateLimiterConfig,
 ): CalculationResponse => {
   const currentRate = removeExpiredRateRequests(getUtcDateNow)(

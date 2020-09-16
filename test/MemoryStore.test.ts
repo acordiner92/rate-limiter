@@ -2,16 +2,16 @@ import { init } from '../src/MemoryStore';
 
 describe('MemoryStore', () => {
   describe('get', () => {
-    test('if a rate exists then a rate is returned', () => {
+    test('if a rate quota exists with that identifier then that rate quota is returned', () => {
       const memoryStore = init();
       const identifier = '192.168.1.1';
-      const rate = {
-        rates: [],
+      const rateQuota = {
+        requestEntries: [],
       };
-      memoryStore.saveRate(identifier, rate);
+      memoryStore.saveRate(identifier, rateQuota);
 
       expect(memoryStore.getRate(identifier)).toStrictEqual({
-        rates: [],
+        requestEntries: [],
       });
     });
 
@@ -27,16 +27,16 @@ describe('MemoryStore', () => {
     test('a rate is saved in memory store', () => {
       const memoryStore = init();
       const identifier = '192.168.1.1';
-      const rateRequest = {
-        requestAt: new Date(),
+      const requestEntry = {
+        requestedAt: new Date(),
       };
-      const rate = {
-        rates: [rateRequest],
+      const rateQuota = {
+        requestEntries: [requestEntry],
       };
-      memoryStore.saveRate(identifier, rate);
+      memoryStore.saveRate(identifier, rateQuota);
 
       expect(memoryStore.getRate(identifier)).toStrictEqual({
-        rates: [rateRequest],
+        requestEntries: [requestEntry],
       });
     });
   });
