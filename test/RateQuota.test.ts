@@ -6,7 +6,7 @@ import {
 import { utc } from '../src/DateUtil';
 
 describe('RateQuota', () => {
-  const oneHr = 3600;
+  const oneHr = 3600000;
 
   describe('init', () => {
     test('Creates a new rate quota', () =>

@@ -2,7 +2,7 @@ import { utc } from '../src/DateUtil';
 import { calculateRateLimit } from '../src/RateQuotaLimiter';
 
 describe('RateQuotaLimiter', () => {
-  const oneHr = 3600;
+  const oneHr = 3600000;
   const oneMinute = 60000;
 
   describe('calculateRateLimit', () => {

@@ -5,7 +5,7 @@ import { getHasRateLimitExceeded } from './RateQuotaHandler';
 
 const app = express();
 const port = 5000;
-const oneHour = 3600;
+const oneHour = 3600000;
 
 const memoryStore = init();
 

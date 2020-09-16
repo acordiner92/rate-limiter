@@ -19,9 +19,7 @@ export const removeExpiredRequestEntries = (getUtcDateNow: GetUtcDateNow) => (
   rateDuration: number,
 ): RateQuota => {
   const nonExpiredRequestEntries = rateQuota.requestEntries.filter(
-    x =>
-      x.requestedAt.getTime() >
-      getUtcDateNow().getTime() - oneSecond * rateDuration,
+    x => x.requestedAt.getTime() > getUtcDateNow().getTime() - rateDuration,
   );
   return {
     ...rateQuota,

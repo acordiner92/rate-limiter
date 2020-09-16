@@ -6,7 +6,7 @@ const getDifferenceInMilliseconds = (getUtcDateNow: GetUtcDateNow) => (
   rateDuration: number,
 ): number =>
   requestEntry.requestedAt.getTime() -
-  (getUtcDateNow().getTime() - 1000 * rateDuration);
+  (getUtcDateNow().getTime() - rateDuration);
 export const hasRateLimitExceeded = (
   rateQuota: RateQuota,
   requestLimit: number,

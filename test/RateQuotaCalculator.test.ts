@@ -6,7 +6,7 @@ import {
 
 const oneSecond = 1000;
 const oneMinute = 60000;
-const oneHour = 3600;
+const oneHour = 3600000;
 
 describe('RateQuotaCalculator', () => {
   describe('hasRateLimitExceeded', () => {
