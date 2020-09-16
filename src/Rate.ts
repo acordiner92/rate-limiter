@@ -42,15 +42,12 @@ export const addNewRateRequestToRate = (rate: Rate, requestAt: Date): Rate => {
   };
 };
 
-const getDifferenceInSeconds = (getUtcDateNow: GetUtcDateNow) => (
+const getDifferenceInMilliseconds = (getUtcDateNow: GetUtcDateNow) => (
   rateRequest: RateRequest,
   rateDuration: number,
 ): number =>
-  Math.ceil(
-    (rateRequest.requestAt.getTime() -
-      (getUtcDateNow().getTime() - 1000 * rateDuration)) /
-      1000,
-  );
+  rateRequest.requestAt.getTime() -
+  (getUtcDateNow().getTime() - 1000 * rateDuration);
 
 export const getRetryInAmount = (getUtcDateNow: GetUtcDateNow) => (
   rate: Rate,
@@ -61,6 +58,9 @@ export const getRetryInAmount = (getUtcDateNow: GetUtcDateNow) => (
     .sort((a, b) => a.requestAt.getTime() - b.requestAt.getTime());
 
   return oldestRateRequest
-    ? getDifferenceInSeconds(getUtcDateNow)(oldestRateRequest, rateDuration)
+    ? getDifferenceInMilliseconds(getUtcDateNow)(
+        oldestRateRequest,
+        rateDuration,
+      )
     : 0;
 };

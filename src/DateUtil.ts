@@ -6,9 +6,7 @@ export const utc = (
   minutes = 0,
   seconds = 0,
   ms = 0,
-): Date => {
-  return new Date(Date.UTC(year, month, date, hours, minutes, seconds, ms));
-};
+): Date => new Date(Date.UTC(year, month, date, hours, minutes, seconds, ms));
 
 export const utcDate = (date: Date): Date =>
   new Date(date.getTime() - date.getTimezoneOffset() * 60000);

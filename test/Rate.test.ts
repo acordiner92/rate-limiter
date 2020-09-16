@@ -119,7 +119,7 @@ describe('Rate', () => {
       const rate = {
         rates: [existingRateRequest],
       };
-      expect(getRetryInAmount(getUtcDateNow)(rate, 3600)).toBe(2);
+      expect(getRetryInAmount(getUtcDateNow)(rate, 3600)).toBe(2000);
     });
 
     test('retryInAmount should be based the oldest rate request', () => {
@@ -132,7 +132,7 @@ describe('Rate', () => {
       const rate = {
         rates: [newerRateRequest, oldestRateRequest],
       };
-      expect(getRetryInAmount(getUtcDateNow)(rate, 3600)).toBe(1200); // 20min remaining
+      expect(getRetryInAmount(getUtcDateNow)(rate, 3600)).toBe(1200000); // 20min remaining
     });
   });
 });
