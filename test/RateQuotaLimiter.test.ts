@@ -1,7 +1,7 @@
 import { utc } from '../src/DateUtil';
-import { calculateRateLimit } from '../src/RateLimiter';
+import { calculateRateLimit } from '../src/RateQuotaLimiter';
 
-describe('RateLimiter', () => {
+describe('RateQuotaLimiter', () => {
   describe('calculateRateLimit', () => {
     const getUtcDateNow = (): Date => utc(2020, 10, 10, 8, 10);
 

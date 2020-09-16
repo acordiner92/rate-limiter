@@ -1,7 +1,7 @@
 import express from 'express';
 import { rateLimiterMiddleware } from './Middleware';
 import { init } from './MemoryStore';
-import { getHasRateLimitExceeded } from './RateLimiter';
+import { getHasRateLimitExceeded } from './RateQuotaHandler';
 
 const app = express();
 const port = 5000;

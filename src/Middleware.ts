@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { GetHasRateLimitExceeded } from './RateLimiter';
+import { GetHasRateLimitExceeded } from './RateQuotaHandler';
 
 export const rateLimiterMiddleware = (
   getHasRateLimitExceeded: GetHasRateLimitExceeded,
