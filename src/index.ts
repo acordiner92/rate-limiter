@@ -5,12 +5,13 @@ import { getHasRateLimitExceeded } from './RateLimiter';
 
 const app = express();
 const port = 5000;
+const oneHour = 3600;
 
 const memoryStore = init();
 
 const rateLimiterConfig = {
-  requestLimit: 1,
-  duration: 60,
+  requestLimit: 100,
+  duration: oneHour,
 };
 
 const getHasRateLimitExceededFn = getHasRateLimitExceeded(
