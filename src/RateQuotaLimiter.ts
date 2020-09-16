@@ -1,7 +1,7 @@
 import {
-  addNewRateRequestToRate,
+  addNewRequestEntryToRateQuota,
   RateQuota,
-  removeExpiredRateRequests,
+  removeExpiredRequestEntries,
 } from './RateQuota';
 
 import { GetUtcDateNow } from './DateUtil';
@@ -27,12 +27,12 @@ export const calculateRateLimit = (getUtcDateNow: GetUtcDateNow) => (
   rate: RateQuota,
   config: RateLimiterConfig,
 ): CalculationResponse => {
-  const currentRate = removeExpiredRateRequests(getUtcDateNow)(
+  const currentRate = removeExpiredRequestEntries(getUtcDateNow)(
     rate,
     config.duration,
   );
 
-  const currentRateWithNewRequest = addNewRateRequestToRate(
+  const currentRateWithNewRequest = addNewRequestEntryToRateQuota(
     currentRate,
     getUtcDateNow(),
   );

@@ -1,6 +1,6 @@
 import {
-  removeExpiredRateRequests,
-  addNewRateRequestToRate,
+  removeExpiredRequestEntries,
+  addNewRequestEntryToRateQuota,
   init,
 } from '../src/RateQuota';
 import { utc } from '../src/DateUtil';
@@ -13,7 +13,7 @@ describe('RateQuota', () => {
       }));
   });
 
-  describe('removeExpiredRateRequests', () => {
+  describe('removeExpiredRequestEntries', () => {
     const getUtcDateNow = (): Date => utc(2020, 10, 10, 8, 10);
 
     test('if no request entries have expired then same number of request entries should be returned', () => {
@@ -22,7 +22,7 @@ describe('RateQuota', () => {
       };
 
       expect(
-        removeExpiredRateRequests(getUtcDateNow)(
+        removeExpiredRequestEntries(getUtcDateNow)(
           { requestEntries: [nonExpiredRateRequest] },
           3600,
         ),
@@ -37,7 +37,7 @@ describe('RateQuota', () => {
       };
 
       expect(
-        removeExpiredRateRequests(getUtcDateNow)(
+        removeExpiredRequestEntries(getUtcDateNow)(
           { requestEntries: [expiredRequestEntry] },
           3600,
         ),
@@ -55,7 +55,7 @@ describe('RateQuota', () => {
       };
 
       expect(
-        removeExpiredRateRequests(getUtcDateNow)(
+        removeExpiredRequestEntries(getUtcDateNow)(
           { requestEntries: [expiredRequestEntry, nonExpiredRequestEntry] },
           3600,
         ),
@@ -65,7 +65,7 @@ describe('RateQuota', () => {
     });
   });
 
-  describe('addNewRateRequestToRate', () => {
+  describe('addNewRequestEntryToRateQuota', () => {
     test('new request entry is added to rate quota', () => {
       const newRequestedAt = utc(2020, 10, 10, 8, 10);
       const existingRateEntry = {
@@ -75,7 +75,9 @@ describe('RateQuota', () => {
         requestEntries: [existingRateEntry],
       };
 
-      expect(addNewRateRequestToRate(rateQuota, newRequestedAt)).toStrictEqual({
+      expect(
+        addNewRequestEntryToRateQuota(rateQuota, newRequestedAt),
+      ).toStrictEqual({
         requestEntries: [
           existingRateEntry,
           {

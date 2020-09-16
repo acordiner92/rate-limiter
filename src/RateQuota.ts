@@ -12,21 +12,21 @@ export const init = (): RateQuota => ({
   requestEntries: [],
 });
 
-export const removeExpiredRateRequests = (getUtcDateNow: GetUtcDateNow) => (
+export const removeExpiredRequestEntries = (getUtcDateNow: GetUtcDateNow) => (
   rateQuota: RateQuota,
   rateDuration: number,
 ): RateQuota => {
-  const nonExpiredRates = rateQuota.requestEntries.filter(
+  const nonExpiredRequestEntries = rateQuota.requestEntries.filter(
     x =>
       x.requestedAt.getTime() > getUtcDateNow().getTime() - 1000 * rateDuration,
   );
   return {
     ...rateQuota,
-    requestEntries: nonExpiredRates,
+    requestEntries: nonExpiredRequestEntries,
   };
 };
 
-export const addNewRateRequestToRate = (
+export const addNewRequestEntryToRateQuota = (
   rateQuota: RateQuota,
   requestedAt: Date,
 ): RateQuota => {
