@@ -13,8 +13,8 @@ describe('RateQuotaHandler', () => {
       };
 
       const config = {
-        requestLimit: 1,
-        duration: 5 * oneSecond,
+        limit: 1,
+        ttl: 5 * oneSecond,
       };
 
       getHasRateLimitExceeded(

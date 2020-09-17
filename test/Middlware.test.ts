@@ -11,8 +11,8 @@ const getTestServer = (): Express => {
   const memoryStore = init();
 
   const rateLimiterConfig = {
-    requestLimit: 1,
-    duration: oneHour,
+    limit: 1,
+    ttl: oneHour,
   };
   app.use(
     rateLimiterMiddleware(

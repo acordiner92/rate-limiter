@@ -11,8 +11,8 @@ const oneHour = 3600000;
 const memoryStore = init();
 
 const rateLimiterConfig = {
-  requestLimit: 100,
-  duration: oneHour,
+  limit: 100,
+  ttl: oneHour,
 };
 
 app.use(

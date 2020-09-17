@@ -14,10 +14,10 @@ export const init = (): RateQuota => ({
 
 export const removeExpiredRequestEntries = (getUtcDateNow: GetUtcDateNow) => (
   rateQuota: RateQuota,
-  rateDuration: number,
+  ttl: number,
 ): RateQuota => {
   const nonExpiredRequestEntries = rateQuota.requestEntries.filter(
-    x => x.requestedAt.getTime() > getUtcDateNow().getTime() - rateDuration,
+    x => x.requestedAt.getTime() > getUtcDateNow().getTime() - ttl,
   );
   return {
     ...rateQuota,

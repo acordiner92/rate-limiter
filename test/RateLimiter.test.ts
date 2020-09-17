@@ -1,20 +1,20 @@
 import { utc } from '../src/DateUtil';
-import { calculateRateLimit } from '../src/RateQuotaLimiter';
+import { calculateRateLimit } from '../src/RateLimiter';
 
-describe('RateQuotaLimiter', () => {
+describe('RateLimiter', () => {
   const oneHr = 3600000;
   const oneMinute = 60000;
 
   describe('calculateRateLimit', () => {
     const getUtcDateNow = (): Date => utc(2020, 10, 10, 8, 10);
+    const config = {
+      limit: 1,
+      ttl: oneHr,
+    };
 
     test('retryIn should be 0 if rate quota limit has not been exceeded', () => {
       const rateQuota = {
         requestEntries: [],
-      };
-      const config = {
-        requestLimit: 1,
-        duration: oneHr,
       };
 
       expect(calculateRateLimit(getUtcDateNow)(rateQuota, config).retryIn).toBe(
@@ -25,10 +25,6 @@ describe('RateQuotaLimiter', () => {
     test('new request entry is added to rate quota if rate quota limit has not been exceeded', () => {
       const rateQuota = {
         requestEntries: [],
-      };
-      const config = {
-        requestLimit: 1,
-        duration: oneHr,
       };
 
       expect(
@@ -49,10 +45,6 @@ describe('RateQuotaLimiter', () => {
           },
         ],
       };
-      const config = {
-        requestLimit: 1,
-        duration: oneHr,
-      };
 
       expect(calculateRateLimit(getUtcDateNow)(rateQuota, config).retryIn).toBe(
         oneMinute * 50, // in 50min
@@ -66,10 +58,6 @@ describe('RateQuotaLimiter', () => {
             requestedAt: utc(2020, 10, 10, 8, 0, 0),
           },
         ],
-      };
-      const config = {
-        requestLimit: 1,
-        duration: oneHr,
       };
 
       expect(

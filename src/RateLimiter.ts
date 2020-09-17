@@ -8,8 +8,8 @@ import { GetUtcDateNow } from './DateUtil';
 import { getRetryInAmount, hasRateLimitExceeded } from './RateQuotaCalculator';
 
 export type RateLimiterConfig = {
-  readonly requestLimit: number;
-  readonly duration: number;
+  readonly limit: number;
+  readonly ttl: number;
 };
 
 export type CalculationResponse = {
@@ -29,7 +29,7 @@ export const calculateRateLimit = (getUtcDateNow: GetUtcDateNow) => (
 ): CalculationResponse => {
   const currentRate = removeExpiredRequestEntries(getUtcDateNow)(
     rate,
-    config.duration,
+    config.ttl,
   );
 
   const currentRateWithNewRequest = addNewRequestEntryToRateQuota(
@@ -38,13 +38,13 @@ export const calculateRateLimit = (getUtcDateNow: GetUtcDateNow) => (
   );
   const hasExceeded = hasRateLimitExceeded(
     currentRateWithNewRequest,
-    config.requestLimit,
+    config.limit,
   );
   if (hasExceeded) {
     return {
       hasExceeded,
       rate: currentRate,
-      retryIn: getRetryInAmount(getUtcDateNow)(currentRate, config.duration),
+      retryIn: getRetryInAmount(getUtcDateNow)(currentRate, config.ttl),
     };
   } else {
     return {

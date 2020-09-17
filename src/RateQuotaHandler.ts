@@ -4,7 +4,7 @@ import {
   calculateRateLimit,
   RateLimiterConfig,
   RateLimitResponse,
-} from './RateQuotaLimiter';
+} from './RateLimiter';
 import { init } from './RateQuota';
 
 export const getHasRateLimitExceeded = (

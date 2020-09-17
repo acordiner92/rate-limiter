@@ -3,27 +3,23 @@ import { RateQuota, RequestEntry } from './RateQuota';
 
 const getDifferenceInMilliseconds = (getUtcDateNow: GetUtcDateNow) => (
   requestEntry: RequestEntry,
-  rateDuration: number,
+  ttl: number,
 ): number =>
-  requestEntry.requestedAt.getTime() -
-  (getUtcDateNow().getTime() - rateDuration);
+  requestEntry.requestedAt.getTime() - (getUtcDateNow().getTime() - ttl);
 export const hasRateLimitExceeded = (
   rateQuota: RateQuota,
-  requestLimit: number,
-): boolean => rateQuota.requestEntries.length > requestLimit;
+  limit: number,
+): boolean => rateQuota.requestEntries.length > limit;
 
 export const getRetryInAmount = (getUtcDateNow: GetUtcDateNow) => (
   rateQuota: RateQuota,
-  rateDuration: number,
+  ttl: number,
 ): number => {
   const [oldestRateRequest] = rateQuota.requestEntries
     .slice()
     .sort((a, b) => a.requestedAt.getTime() - b.requestedAt.getTime());
 
   return oldestRateRequest
-    ? getDifferenceInMilliseconds(getUtcDateNow)(
-        oldestRateRequest,
-        rateDuration,
-      )
+    ? getDifferenceInMilliseconds(getUtcDateNow)(oldestRateRequest, ttl)
     : 0;
 };
