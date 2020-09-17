@@ -29,6 +29,7 @@ export const runRateLimitCheck = (
     rateQuota,
     config.ttl,
   );
+
   const currentRateQuotaWithNewEntry = addNewRequestEntryToRateQuota(
     currentRateQuota,
     getUtcDateNow(),

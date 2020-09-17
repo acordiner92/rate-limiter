@@ -4,11 +4,11 @@ import {
   hasRateQuotaLimitBeenExceeded,
 } from '../src/RateQuotaCalculator';
 
-const oneSecond = 1000;
-const oneMinute = 60000;
-const oneHour = 3600000;
-
 describe('RateQuotaCalculator', () => {
+  const oneSecond = 1000;
+  const oneMinute = 60000;
+  const oneHour = 3600000;
+
   describe('hasRateQuotaLimitBeenExceeded', () => {
     const requestEntry = {
       requestedAt: utc(2020, 10, 10, 8, 10),
