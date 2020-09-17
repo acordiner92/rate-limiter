@@ -8,10 +8,23 @@ export type RateQuota = {
   readonly requestEntries: ReadonlyArray<RequestEntry>;
 };
 
+/**
+ * Creates a new rate quota.
+ *
+ * @returns {RateQuota}
+ */
 export const init = (): RateQuota => ({
   requestEntries: [],
 });
 
+/**
+ * Removes all request entries that have past
+ * the configured ttl time.
+ *
+ * @param {RateQuota} rateQuota
+ * @param {number} ttl
+ * @returns {RateQuota} rate quota with no expired request entries.
+ */
 export const removeExpiredRequestEntries = (getUtcDateNow: GetUtcDateNow) => (
   rateQuota: RateQuota,
   ttl: number,
@@ -25,6 +38,13 @@ export const removeExpiredRequestEntries = (getUtcDateNow: GetUtcDateNow) => (
   };
 };
 
+/**
+ * Adds a new request entry to the rate quota.
+ *
+ * @param {RateQuota} rateQuota
+ * @param {Date} requestedAt
+ * @returns {RateQuota}
+ */
 export const addNewRequestEntryToRateQuota = (
   rateQuota: RateQuota,
   requestedAt: Date,

@@ -1,7 +1,7 @@
 import request from 'supertest';
 import express, { Express } from 'express';
 import { rateLimiterMiddleware } from '../src/Middleware';
-import { getHasRateLimitExceeded } from '../src/RateQuotaHandler';
+import { runRateLimitCheck } from '../src/RateQuotaHandler';
 import { init } from '../src/MemoryStore';
 import { getUtcDateNow } from '../src/DateUtil';
 
@@ -16,7 +16,7 @@ const getTestServer = (): Express => {
   };
   app.use(
     rateLimiterMiddleware(
-      getHasRateLimitExceeded(memoryStore, rateLimiterConfig, getUtcDateNow),
+      runRateLimitCheck(memoryStore, rateLimiterConfig, getUtcDateNow),
     ),
   );
   app.get('/test', (_req, res) => res.send('Hello World!'));

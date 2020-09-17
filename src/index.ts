@@ -1,7 +1,7 @@
 import express from 'express';
 import { rateLimiterMiddleware } from './Middleware';
 import { init } from './MemoryStore';
-import { getHasRateLimitExceeded } from './RateQuotaHandler';
+import { runRateLimitCheck } from './RateQuotaHandler';
 import { getUtcDateNow } from './DateUtil';
 
 const app = express();
@@ -17,7 +17,7 @@ const rateLimiterConfig = {
 
 app.use(
   rateLimiterMiddleware(
-    getHasRateLimitExceeded(memoryStore, rateLimiterConfig, getUtcDateNow),
+    runRateLimitCheck(memoryStore, rateLimiterConfig, getUtcDateNow),
   ),
 );
 
