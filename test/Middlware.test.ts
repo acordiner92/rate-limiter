@@ -5,7 +5,7 @@ import { getHasRateLimitExceeded } from '../src/RateQuotaHandler';
 import { init } from '../src/MemoryStore';
 import { getUtcDateNow } from '../src/DateUtil';
 
-const getSetupServer = (): Express => {
+const getTestServer = (): Express => {
   const oneHour = 3600000;
   const app = express();
   const memoryStore = init();
@@ -25,7 +25,7 @@ const getSetupServer = (): Express => {
 
 describe('rateLimiterMiddleware', () => {
   test('next middleware is called if rate quota limit has not been exceeded', async () => {
-    const app = getSetupServer();
+    const app = getTestServer();
     const response = await request(app).get('/test');
 
     expect(response.status).toBe(200);
@@ -33,14 +33,14 @@ describe('rateLimiterMiddleware', () => {
   });
 
   test('status code 429 is returned if rate quota limit has been exceeded', async () => {
-    const app = getSetupServer();
+    const app = getTestServer();
     await request(app).get('/test'); // call one
     const response = await request(app).get('/test'); // call two
     expect(response.status).toBe(429);
   });
 
   test('retry message is send in body if rate quota limit has been exceeded', async () => {
-    const app = getSetupServer();
+    const app = getTestServer();
     await request(app).get('/test'); // call one
     const response = await request(app).get('/test'); // call two
     expect(response.text).toBe(
