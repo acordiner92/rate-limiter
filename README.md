@@ -1,7 +1,7 @@
 # Rate limiter
 
 Rate limiter is a global express middleware that can be added to rate limit requests
-coming over a period of time.
+over a period of time.
 
 ## Design
 
