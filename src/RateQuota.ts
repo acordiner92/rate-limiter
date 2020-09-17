@@ -1,7 +1,5 @@
 import { GetUtcDateNow } from './DateUtil';
 
-const oneSecond = 1000;
-
 export type RequestEntry = {
   readonly requestedAt: Date;
 };

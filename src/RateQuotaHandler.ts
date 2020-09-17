@@ -1,4 +1,4 @@
-import { getUtcDateNow } from './DateUtil';
+import { GetUtcDateNow } from './DateUtil';
 import { MemoryStore } from './MemoryStore';
 import {
   calculateRateLimit,
@@ -10,6 +10,7 @@ import { init } from './RateQuota';
 export const getHasRateLimitExceeded = (
   memoryStore: MemoryStore,
   config: RateLimiterConfig,
+  getUtcDateNow: GetUtcDateNow,
 ) => (identifier: string): RateLimitResponse => {
   const rate = memoryStore.getRate(identifier) ?? init();
   const calculation = calculateRateLimit(getUtcDateNow)(rate, config);

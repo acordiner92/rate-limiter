@@ -2,6 +2,7 @@ import express from 'express';
 import { rateLimiterMiddleware } from './Middleware';
 import { init } from './MemoryStore';
 import { getHasRateLimitExceeded } from './RateQuotaHandler';
+import { getUtcDateNow } from './DateUtil';
 
 const app = express();
 const port = 5000;
@@ -14,12 +15,11 @@ const rateLimiterConfig = {
   duration: oneHour,
 };
 
-const getHasRateLimitExceededFn = getHasRateLimitExceeded(
-  memoryStore,
-  rateLimiterConfig,
+app.use(
+  rateLimiterMiddleware(
+    getHasRateLimitExceeded(memoryStore, rateLimiterConfig, getUtcDateNow),
+  ),
 );
-
-app.use(rateLimiterMiddleware(getHasRateLimitExceededFn));
 
 app.get('/test', (_req, res) => res.send('Hello World!'));
 

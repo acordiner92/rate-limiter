@@ -23,6 +23,7 @@
   "homepage": "https://github.com/acordiner92/rate-limiter#readme",
   "devDependencies": {
     "@types/jest": "^26.0.13",
+    "@types/supertest": "^2.0.10",
     "@typescript-eslint/eslint-plugin": "^4.1.0",
     "@typescript-eslint/parser": "^4.1.0",
     "eslint": "^7.9.0",
@@ -31,6 +32,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "jest": "^26.4.2",
     "prettier": "^2.1.1",
+    "supertest": "^4.0.2",
     "ts-jest": "^26.3.0",
     "ts-node-dev": "^1.0.0-pre.62",
     "typescript": "^4.0.2"
