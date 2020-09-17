@@ -11,6 +11,9 @@ export type MemoryStore = {
  * @returns {MemoryStore}
  */
 export const init = (): MemoryStore => {
+  // Storing this in an in memory map for sake of simplicity.
+  // However if we were to use this in a multi server environment
+  // then we would need a shared memory cluster like redis or memcache.
   const inMemoryStore = new Map<string, RateQuota>();
 
   const getRateQuota = (identifier: string): RateQuota | undefined =>
