@@ -1,4 +1,5 @@
 import { GetUtcDateNow } from './DateUtil';
+import logger from './Logger';
 import { MemoryStore } from './MemoryStore';
 import {
   calculateRateLimit,
@@ -8,8 +9,19 @@ import {
 import {
   addNewRequestEntryToRateQuota,
   init,
+  RateQuota,
   removeExpiredRequestEntries,
 } from './RateQuota';
+
+const logRateQuotaBeforeTransformation = (
+  identifier: string,
+  rateQuota: RateQuota,
+): void => logger.info(rateQuota, `rate quota for ${identifier} before`);
+
+const logRateQuotaAfterTransformation = (
+  identifier: string,
+  rateQuota: RateQuota,
+): void => logger.info(rateQuota, `rate quota for ${identifier} after`);
 
 /**
  * Checks whether this particular identity has exceeded the
@@ -24,6 +36,7 @@ export const runRateLimitCheck = (
   getUtcDateNow: GetUtcDateNow,
 ) => (identifier: string): RateLimitResponse => {
   const rateQuota = memoryStore.getRateQuota(identifier) ?? init();
+  logRateQuotaBeforeTransformation(identifier, rateQuota);
 
   const currentRateQuota = removeExpiredRequestEntries(getUtcDateNow)(
     rateQuota,
@@ -40,10 +53,11 @@ export const runRateLimitCheck = (
     config,
   );
 
-  memoryStore.saveRateQuota(
+  const savedRateQuota = memoryStore.saveRateQuota(
     identifier,
     calculation.hasExceeded ? currentRateQuota : currentRateQuotaWithNewEntry,
   );
+  logRateQuotaAfterTransformation(identifier, savedRateQuota);
 
   return {
     hasExceeded: calculation.hasExceeded,
