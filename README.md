@@ -9,7 +9,7 @@ The rate limiter works by tracking requests made by the ip address of the reques
 
 The core rate limiting logic is determined based on whether the number of non expired tracked requests has exceed the limit specified in the config. The way in which the retryIn is determine is through inspected the oldest non expired request entry and determine how close its time is to the ttl.
 
-The in-memory map is plugged into the rate limiter meaning it can be easier swapped out for other adapter variants such as redis.
+The in-memory map is plugged into the rate limiter (via partial application) meaning it can be easier swapped out for other adapter variants such as redis.
 
 This config files allows for the middleware to be configurable for different scenarios.
 
