@@ -23,10 +23,10 @@ export const runRateLimitCheck = (
   config: RateLimiterConfig,
   getUtcDateNow: GetUtcDateNow,
 ) => (identifier: string): RateLimitResponse => {
-  const rate = memoryStore.getRate(identifier) ?? init();
+  const rateQuota = memoryStore.getRateQuota(identifier) ?? init();
 
   const currentRateQuota = removeExpiredRequestEntries(getUtcDateNow)(
-    rate,
+    rateQuota,
     config.ttl,
   );
   const currentRateQuotaWithNewEntry = addNewRequestEntryToRateQuota(
@@ -39,7 +39,7 @@ export const runRateLimitCheck = (
     config,
   );
 
-  memoryStore.saveRate(
+  memoryStore.saveRateQuota(
     identifier,
     calculation.hasExceeded ? currentRateQuota : currentRateQuotaWithNewEntry,
   );

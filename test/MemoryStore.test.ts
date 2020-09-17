@@ -1,16 +1,16 @@
 import { init } from '../src/MemoryStore';
 
 describe('MemoryStore', () => {
-  describe('get', () => {
+  describe('getRateQuota', () => {
     test('if a rate quota exists with that identifier then that rate quota is returned', () => {
       const memoryStore = init();
       const identifier = '192.168.1.1';
       const rateQuota = {
         requestEntries: [],
       };
-      memoryStore.saveRate(identifier, rateQuota);
+      memoryStore.saveRateQuota(identifier, rateQuota);
 
-      expect(memoryStore.getRate(identifier)).toStrictEqual({
+      expect(memoryStore.getRateQuota(identifier)).toStrictEqual({
         requestEntries: [],
       });
     });
@@ -19,11 +19,11 @@ describe('MemoryStore', () => {
       const memoryStore = init();
       const identifier = '192.168.1.1';
 
-      expect(memoryStore.getRate(identifier)).toBeUndefined();
+      expect(memoryStore.getRateQuota(identifier)).toBeUndefined();
     });
   });
 
-  describe('save', () => {
+  describe('saveRateQuota', () => {
     test('a rate is saved in memory store', () => {
       const memoryStore = init();
       const identifier = '192.168.1.1';
@@ -33,9 +33,9 @@ describe('MemoryStore', () => {
       const rateQuota = {
         requestEntries: [requestEntry],
       };
-      memoryStore.saveRate(identifier, rateQuota);
+      memoryStore.saveRateQuota(identifier, rateQuota);
 
-      expect(memoryStore.getRate(identifier)).toStrictEqual({
+      expect(memoryStore.getRateQuota(identifier)).toStrictEqual({
         requestEntries: [requestEntry],
       });
     });

@@ -1,7 +1,10 @@
 import { RateQuota } from './RateQuota';
 
 import { GetUtcDateNow } from './DateUtil';
-import { getRetryInAmount, hasRateLimitExceeded } from './RateQuotaCalculator';
+import {
+  getRetryInAmount,
+  hasRateQuotaLimitBeenExceeded,
+} from './RateQuotaCalculator';
 
 export type RateLimiterConfig = {
   readonly limit: number;
@@ -23,14 +26,14 @@ export type RateLimitResponse = {
  * @returns {RateQuotaResponse} calculations + updated RateQuota.
  */
 export const calculateRateLimit = (getUtcDateNow: GetUtcDateNow) => (
-  rate: RateQuota,
+  rateQuota: RateQuota,
   config: RateLimiterConfig,
 ): RateLimitResponse => {
-  const hasExceeded = hasRateLimitExceeded(rate, config.limit);
+  const hasExceeded = hasRateQuotaLimitBeenExceeded(rateQuota, config.limit);
   return hasExceeded
     ? {
         hasExceeded,
-        retryIn: getRetryInAmount(getUtcDateNow)(rate, config.ttl),
+        retryIn: getRetryInAmount(getUtcDateNow)(rateQuota, config.ttl),
       }
     : {
         hasExceeded,

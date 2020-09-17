@@ -1,7 +1,7 @@
 import { utc } from '../src/DateUtil';
 import {
   getRetryInAmount,
-  hasRateLimitExceeded,
+  hasRateQuotaLimitBeenExceeded,
 } from '../src/RateQuotaCalculator';
 
 const oneSecond = 1000;
@@ -9,14 +9,14 @@ const oneMinute = 60000;
 const oneHour = 3600000;
 
 describe('RateQuotaCalculator', () => {
-  describe('hasRateLimitExceeded', () => {
+  describe('hasRateQuotaLimitBeenExceeded', () => {
     const requestEntry = {
       requestedAt: utc(2020, 10, 10, 8, 10),
     };
 
     test('returns true if the number of requests entries have exceeded the rate quota limit', () =>
       expect(
-        hasRateLimitExceeded(
+        hasRateQuotaLimitBeenExceeded(
           { requestEntries: [requestEntry, requestEntry] },
           1,
         ),
@@ -24,7 +24,7 @@ describe('RateQuotaCalculator', () => {
 
     test('returns false if the number of request entries has not exceeded the rate quota limit', () =>
       expect(
-        hasRateLimitExceeded({ requestEntries: [requestEntry] }, 1),
+        hasRateQuotaLimitBeenExceeded({ requestEntries: [requestEntry] }, 1),
       ).toBeFalsy());
   });
 

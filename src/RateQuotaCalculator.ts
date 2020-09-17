@@ -15,7 +15,7 @@ const getDifferenceInMilliseconds = (getUtcDateNow: GetUtcDateNow) => (
  * @param {number} limit
  * @returns {boolean} has rate quota been exceeded.
  */
-export const hasRateLimitExceeded = (
+export const hasRateQuotaLimitBeenExceeded = (
   rateQuota: RateQuota,
   limit: number,
 ): boolean => rateQuota.requestEntries.length > limit;
