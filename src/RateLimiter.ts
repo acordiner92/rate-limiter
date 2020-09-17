@@ -30,13 +30,10 @@ export const calculateRateLimit = (getUtcDateNow: GetUtcDateNow) => (
   config: RateLimiterConfig,
 ): RateLimitResponse => {
   const hasExceeded = hasRateQuotaLimitBeenExceeded(rateQuota, config.limit);
-  return hasExceeded
-    ? {
-        hasExceeded,
-        retryIn: getRetryInAmount(getUtcDateNow)(rateQuota, config.ttl),
-      }
-    : {
-        hasExceeded,
-        retryIn: 0,
-      };
+  return {
+    hasExceeded,
+    retryIn: hasExceeded
+      ? getRetryInAmount(getUtcDateNow)(rateQuota, config.ttl)
+      : 0,
+  };
 };

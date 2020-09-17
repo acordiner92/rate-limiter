@@ -5,11 +5,9 @@ import { runRateLimitCheck } from './RateQuotaHandler';
 import { getUtcDateNow } from './DateUtil';
 
 const app = express();
+const memoryStore = init();
 const port = 5000;
 const oneHour = 3600000;
-
-const memoryStore = init();
-
 const rateLimiterConfig = {
   limit: 100,
   ttl: oneHour,
