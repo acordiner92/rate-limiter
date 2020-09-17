@@ -49,8 +49,10 @@ then test it from the command line:
 
 ```
 ❯ curl http://localhost:5000/test
-Hello World!                                                                          ❯ curl http://localhost:5000/test
-Hello World!                                                                          ❯ curl http://localhost:5000/test
+Hello World!
+❯ curl http://localhost:5000/test
+Hello World!
+❯ curl http://localhost:5000/test
 Rate limit exceeded. Try again in 3598 seconds
 ```
 
